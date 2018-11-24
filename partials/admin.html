@@ -1,0 +1,108 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1 class="text-center">Food is life</h1></div>
+  </div>
+  <div class="row justify-content-md-center mt-5">
+    <div class="col-10"><h2>Dashboard (Admin)</h2></div>
+    <div class="col-2">
+      <button class="btn btn-danger" ng-click="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h4>Locations</h4>
+
+      <!-- Small modal -->
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#locationModal"
+      >
+        Add location
+      </button>
+
+      <div
+        class="modal fade "
+        ,
+        id="locationModal"
+        ,
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="mySmallModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-body">
+              <form novalidate>
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1"> Location name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="vm.newLocation"
+                  />
+                </div>
+                <button
+                  class="btn btn-default"
+                  ng-click="vm.addLocation(vm.newLocation)"
+                >
+                  Add
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Location name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="l in vm.locations">
+            <th scope="row">{{ $index + 1 }}</th>
+            <td>{{ l.name }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <hr />
+      <h4>Users</h4>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Users</th>
+            <th>Change status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="u in vm.users">
+            <th scope="row">{{ $index + 1 }}</th>
+            <td>{{ u.name }}</td>
+            <td>
+              <button
+                class="btn btn-danger"
+                ng-show="u.isActive"
+                ng-click="vm.toggleStatus(false, u._id)"
+              >
+                De-activate
+              </button>
+              <button
+                class="btn btn-primary"
+                ng-hide="u.isActive"
+                ng-click="vm.toggleStatus(true, u._id)"
+              >
+                Activate
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
