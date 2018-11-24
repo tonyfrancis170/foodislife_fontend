@@ -15,8 +15,6 @@
     Notification,
     localStorageService
   ) {
-    $scope.formData = {};
-
     $scope.login = formData => {
       apiFactory
         .login(formData)
@@ -49,13 +47,27 @@
   });
 
   app.controller("regCtrl", function($scope, $state, apiFactory, Notification) {
-    $scope.formData = {};
+    $scope.formData = {
+      isHotel: "false"
+    };
+    apiFactory
+      .listAllLocations()
+      .then(resp => {
+        $scope.locations = resp.data.data;
+      })
+      .catch(e => {
+        console.log(e);
+      });
 
     $scope.signup = formData => {
+      formData.isHotel = formData.isHotel !== "false";
+
       apiFactory
         .signup(formData)
         .then(resp => {
-          $scope.formData = {};
+          $scope.formData = {
+            isHotel: "false"
+          };
 
           Notification.success(resp.data.message);
         })
@@ -77,6 +89,37 @@
     Notification,
     localStorageService
   ) {
+    let vm = this;
+
+    apiFactory
+      .getUserInfo()
+      .then(resp => {
+        vm.user = resp.data.data;
+      })
+      .catch(e => {
+        console.log(e);
+      });
+
+    apiFactory
+      .listAllLocations()
+      .then(resp => {
+        $scope.locations = resp.data.data;
+      })
+      .catch(e => {
+        console.log(e);
+      });
+
+    vm.getHotelsByLocation = locationId => {
+      apiFactory
+        .getHotelsByLocation({ location: locationId })
+        .then(resp => {
+          vm.hotels = resp.data.data;
+          console.log(vm.hotels);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    };
     $scope.logout = () => {
       apiFactory
         .logout()
@@ -171,6 +214,33 @@
     Notification,
     localStorageService
   ) {
+    let vm = this;
+
+    vm.packets = 0;
+    apiFactory
+      .getHotelInfo()
+      .then(resp => {
+        vm.hotelInfo = resp.data.data;
+      })
+      .catch(e => {
+        console.log(e);
+      });
+
+    vm.addFoodPackets = count => {
+      $("#packetsModal").modal("hide");
+      apiFactory
+        .addFoodPackets({ count })
+        .then(resp => {
+          Notification.success(resp.data.message);
+          vm.packets = 0;
+          vm.hotelInfo = resp.data.data;
+        })
+
+        .catch(e => {
+          console.log(e);
+        });
+    };
+
     $scope.logout = () => {
       apiFactory
         .logout()

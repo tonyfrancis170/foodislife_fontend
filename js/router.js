@@ -19,13 +19,13 @@
       $stateProvider.state("dashboard", {
         url: "/dashboard",
         templateUrl: "/partials/dashboard.html",
-        controller: "dashboardCtrl"
+        controller: "dashboardCtrl as vm"
       });
 
       $stateProvider.state("hotel", {
         url: "/hotel",
         templateUrl: "/partials/hotel.html",
-        controller: "hotelCtrl"
+        controller: "hotelCtrl as vm"
       });
 
       $stateProvider.state("admin", {

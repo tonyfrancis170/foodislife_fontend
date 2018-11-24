@@ -3,9 +3,87 @@
     <div class="col-12"><h1 class="text-center">Food is life</h1></div>
   </div>
   <div class="row justify-content-md-center mt-5">
-    <div class="col-10"><h2>Dashboard (Hotel)</h2></div>
+    <div class="col-10">
+      <h2>Dashboard ({{ vm.hotelInfo.user.name }})</h2>
+    </div>
     <div class="col-2">
       <button class="btn btn-danger" ng-click="logout()">Logout</button>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-10">
+      <h5>Hotel Info</h5>
+      <p>Food packets left : {{ vm.hotelInfo.foodPackets }}</p>
+      <p>Expires at : {{ vm.hotelInfo.stockTime | date: "medium" }}</p>
+    </div>
+    <div class="col-2">
+      <!-- Small modal -->
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#packetsModal"
+      >
+        Add Packets
+      </button>
+
+      <div
+        class="modal fade "
+        ,
+        id="packetsModal"
+        ,
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="mySmallModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-body">
+              <form novalidate>
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1"> Packets</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    ng-model="vm.packets"
+                  />
+                </div>
+                <button
+                  class="btn btn-default"
+                  ng-click="vm.addFoodPackets(vm.packets)"
+                >
+                  Add
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Activity</th>
+
+            <th scope="col">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="a in vm.hotelInfo.activity">
+            <th scope="row">{{ $index + 1 }}</th>
+            <td>{{ a.info }}</td>
+
+            <td>{{ a.time | date: "medium" }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

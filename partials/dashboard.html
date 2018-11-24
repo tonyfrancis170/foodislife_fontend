@@ -3,9 +3,80 @@
     <div class="col-12"><h1 class="text-center">Food is life</h1></div>
   </div>
   <div class="row justify-content-md-center mt-5">
-    <div class="col-10"><h2>Dashboard (User)</h2></div>
+    <div class="col-10">
+      <h2>Dashboard ({{ vm.user.name }})</h2>
+    </div>
     <div class="col-2">
       <button class="btn btn-danger" ng-click="logout()">Logout</button>
+    </div>
+    <hr />
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-4">
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Hotel Locations</label>
+        <select
+          class="form-control"
+          id="exampleFormControlSelect1"
+          ng-model="hotelLocations"
+          ng-options="l._id as l.name for l in locations track by l._id"
+        >
+        </select>
+      </div>
+    </div>
+    <div class="col-4">
+      <button
+        class="btn btn-primary"
+        ng-click=" vm.getHotelsByLocation (hotelLocations)"
+      >
+        Search
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Hotel</th>
+            <th scope="col">Packets left</th>
+            <th scope="col">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="h in vm.hotels">
+            <th scope="row">{{ $index + 1 }}</th>
+            <td>{{ h.user.name }}</td>
+            <td>{{ h.foodPackets }}</td>
+            <td>{{ h.stockTime | date: "medium" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h5>Activity</h5>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Activity</th>
+
+            <th scope="col">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="a in vm.hotelInfo.activity">
+            <th scope="row">{{ $index + 1 }}</th>
+            <td>{{ a.info }}</td>
+
+            <td>{{ a.time | date: "medium" }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

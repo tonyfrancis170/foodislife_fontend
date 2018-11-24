@@ -1,41 +1,95 @@
 <div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="text-center">Food is life</h1>
+  <div class="row">
+    <div class="col-12"><h1 class="text-center">Food is life</h1></div>
+  </div>
+  <div class="row justify-content-md-center mt-5">
+    <div class="col-8">
+      <form novalidate>
+        <h4 class="text-center">Register</h4>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            aria-describedby="emailHelp"
+            placeholder="Enter name"
+            ng-model="formData.name"
+          />
         </div>
-    </div>
-    <div class="row justify-content-md-center mt-5">
-        <div class="col-8">
-            <form novalidate>
-                <h4 class="text-center">Register</h4>
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter name"
-                        ng-model="formData.name">
-
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                        placeholder="Enter email" ng-model="formData.email">
-
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"
-                        ng-model="formData.password">
-                </div>
-                <div>
-                    <a href="" ng-click="goToLogin()">Click here to login</a>
-                </div>
-                <!-- <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input">
-                                Check me out
-                            </label>
-                        </div> -->
-                <button class="btn btn-primary" ng-click="signup(formData)">Submit</button>
-            </form>
+        <div class="form-group">
+          <label for="">Category</label>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="exampleRadios"
+              id="exampleRadios1"
+              ng-model="formData.isHotel"
+              value="false"
+              checked
+            />
+            <label class="form-check-label" for="exampleRadios1">
+              Customer
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="exampleRadios"
+              id="exampleRadios2"
+              ng-model="formData.isHotel"
+              value="true"
+            />
+            <label class="form-check-label" for="exampleRadios2"> Hotel </label>
+          </div>
         </div>
+        <div class="form-group" ng-show="formData.isHotel === 'true'">
+          <label for="exampleFormControlSelect1">Locations</label>
+          <select
+            class="form-control"
+            id="exampleFormControlSelect1"
+            ng-model="formData.locationId"
+            ng-options="l._id as l.name for l in locations track by l._id"
+          >
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="Enter email"
+            ng-model="formData.email"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="exampleInputPassword1"
+            placeholder="Password"
+            ng-model="formData.password"
+          />
+        </div>
+        <div><a href="" ng-click="goToLogin()">Click here to login</a></div>
+        <!--
+          <div class="form-check">
+                 <label class="form-check-label">
+                     <input type="checkbox" class="form-check-input">
+                     Check me out
+                 </label>
+             </div>
+        -->
+        <button class="btn btn-primary" ng-click="signup(formData)">
+          Submit
+        </button>
+      </form>
     </div>
+  </div>
 </div>

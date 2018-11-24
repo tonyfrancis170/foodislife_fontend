@@ -27,11 +27,8 @@
 
       listAllLocations: function() {
         return $http({
-          url: url + "/api/listAllLocations",
-          method: "GET",
-          headers: {
-            "x-access-token": localStorageService.get("token")
-          }
+          url: url + "/listAllLocations",
+          method: "GET"
         });
       },
       getAllUsers: function() {
@@ -43,7 +40,15 @@
           }
         });
       },
-
+      getHotelInfo: function() {
+        return $http({
+          url: url + "/api/getHotelInfo",
+          methods: "GET",
+          headers: {
+            "x-access-token": localStorageService.get("token")
+          }
+        });
+      },
       reActivate: function(payload) {
         return $http({
           url: url + "/api/reActivate",
@@ -71,6 +76,38 @@
       addLocation: function(payload) {
         return $http({
           url: url + "/api/addLocation",
+          method: "POST",
+          data: payload,
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": localStorageService.get("token")
+          }
+        });
+      },
+
+      getUserInfo: function() {
+        return $http({
+          url: url + "/api/getUserInfo",
+          method: "GET",
+          headers: {
+            "x-access-token": localStorageService.get("token")
+          }
+        });
+      },
+      addFoodPackets: function(payload) {
+        return $http({
+          url: url + "/api/addFoodPackets",
+          method: "PUT",
+          data: payload,
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": localStorageService.get("token")
+          }
+        });
+      },
+      getHotelsByLocation: function(payload) {
+        return $http({
+          url: url + "/api/getHotelsByLocation",
           method: "POST",
           data: payload,
           headers: {
