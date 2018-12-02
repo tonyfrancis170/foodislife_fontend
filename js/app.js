@@ -16,6 +16,10 @@
     localStorageService
   ) {
     $scope.login = formData => {
+      if (!formData.email) {
+        Notification.warning("Invalid email");
+        return;
+      }
       apiFactory
         .login(formData)
         .then(resp => {
@@ -44,6 +48,23 @@
     $scope.goToRegister = () => {
       $state.go("register");
     };
+
+    $scope.openEmailModal = () => {
+      $("#forgotModal").modal("show");
+    };
+
+    $scope.forgotPassword = email => {
+      $("#forgotModal").modal("hide");
+      apiFactory
+        .forgotPassword({ email })
+        .then(resp => {
+          $scope.forgotEmail = "";
+          Notification.success(resp.data.message);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    };
   });
 
   app.controller("regCtrl", function($scope, $state, apiFactory, Notification) {
@@ -61,6 +82,40 @@
 
     $scope.signup = formData => {
       formData.isHotel = formData.isHotel !== "false";
+      if (!formData.email) {
+        Notification.warning("Invalid email");
+        return;
+      }
+
+      if (formData.password !== formData.confirmPassword) {
+        Notification.warning("Passwords do not match");
+        return;
+      }
+
+      if (formData.password.length < 6) {
+        Notification.warning("Password too short. Minimum 6 characters");
+        return;
+      }
+
+      let strongPassword = [
+        { regex: /[A-Z]+/, type: "uppercase" },
+        { regex: /[0-9]+/, type: "number" },
+        { regex: /\W+/, type: "special" }
+      ].reduce((acc, x) => {
+        if (!x.regex.test(formData.password)) {
+          Notification.warning(
+            `Password should contain atlease one ${x.type} character`
+          );
+          acc = false;
+        }
+        return acc;
+      }, true);
+
+      if (!strongPassword) {
+        return;
+      }
+
+      formData.isHotel = formData.isHotel === "false" ? false : true;
 
       apiFactory
         .signup(formData)
@@ -110,11 +165,39 @@
       });
 
     vm.getHotelsByLocation = locationId => {
+      vm.currentLocationId = locationId;
       apiFactory
         .getHotelsByLocation({ location: locationId })
         .then(resp => {
           vm.hotels = resp.data.data;
           console.log(vm.hotels);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    };
+
+    vm.openReserveModal = hotelId => {
+      $("#reserveModal").modal("show");
+      vm.selectedHotel = hotelId;
+    };
+
+    vm.reservePacket = (count, hotelId, locationId) => {
+      $("#reserveModal").modal("hide");
+      vm.packets = 0;
+      if (!count) return;
+      if (count > 5) {
+        Notification.warning("Maximum limit exceeded");
+        return;
+      }
+      apiFactory
+        .reservePackets({
+          count,
+          hotelId
+        })
+        .then(resp => {
+          vm.getHotelsByLocation(locationId);
+          Notification.success(resp.data.message);
         })
         .catch(e => {
           console.log(e);

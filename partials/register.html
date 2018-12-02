@@ -4,7 +4,7 @@
   </div>
   <div class="row justify-content-md-center mt-5">
     <div class="col-8">
-      <form novalidate>
+      <form name="signupForm">
         <h4 class="text-center">Register</h4>
         <div class="form-group">
           <label for="name">Name</label>
@@ -15,6 +15,7 @@
             aria-describedby="emailHelp"
             placeholder="Enter name"
             ng-model="formData.name"
+            required
           />
         </div>
         <div class="form-group">
@@ -52,6 +53,7 @@
             id="exampleFormControlSelect1"
             ng-model="formData.locationId"
             ng-options="l._id as l.name for l in locations track by l._id"
+            required
           >
           </select>
         </div>
@@ -64,6 +66,7 @@
             aria-describedby="emailHelp"
             placeholder="Enter email"
             ng-model="formData.email"
+            required
           />
         </div>
 
@@ -75,6 +78,18 @@
             id="exampleInputPassword1"
             placeholder="Password"
             ng-model="formData.password"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword2">Confirm password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="exampleInputPassword2"
+            placeholder="Confirm Password"
+            ng-model="formData.confirmPassword"
+            required
           />
         </div>
         <div><a href="" ng-click="goToLogin()">Click here to login</a></div>

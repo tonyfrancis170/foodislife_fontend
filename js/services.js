@@ -116,6 +116,28 @@
           }
         });
       },
+      reservePackets: function(payload) {
+        return $http({
+          url: url + "/api/reservePackets",
+          method: "PUT",
+          data: payload,
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": localStorageService.get("token")
+          }
+        });
+      },
+      forgotPassword: function(payload) {
+        return $http({
+          url: url + "/forgotPassword",
+          method: "POST",
+          data: payload,
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": localStorageService.get("token")
+          }
+        });
+      },
       logout: function() {
         return $http({
           url: url + "/api/logout",
