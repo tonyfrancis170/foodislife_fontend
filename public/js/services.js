@@ -138,6 +138,27 @@
           }
         });
       },
+      verifyEmailToken: function(payload) {
+        return $http({
+          url: url + "/verifyEmailToken",
+          method: "POST",
+          data: payload,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+      },
+      setPassword: function(payload) {
+        return $http({
+          url: url + "/setPassword",
+          method: "POST",
+          data: payload,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+      },
+
       logout: function() {
         return $http({
           url: url + "/api/logout",

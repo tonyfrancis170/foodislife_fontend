@@ -33,5 +33,11 @@
         templateUrl: "/partials/admin.html",
         controller: "adminCtrl as vm"
       });
+
+      $stateProvider.state("forgotPassword", {
+        url: "/forgot-password/:id",
+        templateUrl: "/partials/forgotPassword.html",
+        controller: "forgotPassword as vm"
+      });
     });
 })();

@@ -81,7 +81,6 @@
       });
 
     $scope.signup = formData => {
-      formData.isHotel = formData.isHotel !== "false";
       if (!formData.email) {
         Notification.warning("Invalid email");
         return;
@@ -117,19 +116,28 @@
 
       formData.isHotel = formData.isHotel === "false" ? false : true;
 
-      apiFactory
-        .signup(formData)
-        .then(resp => {
-          $scope.formData = {
-            isHotel: "false"
-          };
+      grecaptcha.ready(() => {
+        grecaptcha
+          .execute("6LfgqX8UAAAAALka6Ya_sbR9ymuAExzdP1X3sy3Q", {
+            action: "registration"
+          })
+          .then(token => {
+            formData.captchaToken = token;
+            apiFactory
+              .signup(formData)
+              .then(resp => {
+                $scope.formData = {
+                  isHotel: false
+                };
 
-          Notification.success(resp.data.message);
-        })
-        .catch(e => {
-          Notification.error(e.data.message);
-          console.log(e);
-        });
+                Notification.success(resp.data.message);
+              })
+              .catch(e => {
+                Notification.error(e.data.message);
+                console.log(e);
+              });
+          });
+      });
     };
 
     $scope.goToLogin = () => {
@@ -335,6 +343,76 @@
           $state.go("login");
           Notification.error(e.data.message);
           console.log(e);
+        });
+    };
+  });
+
+  app.controller("forgotPassword", function(
+    $scope,
+    $state,
+    $stateParams,
+    apiFactory,
+    Notification,
+    localStorageService
+  ) {
+    let vm = this;
+    vm.showInput = false;
+    apiFactory
+      .verifyEmailToken({ token: $stateParams.id })
+      .then(resp => {
+        if (resp.data.valid) {
+          vm.showInput = true;
+        } else {
+          Notification.error(resp.data.message);
+        }
+      })
+      .catch(e => {
+        console.log(e);
+        Notification.error(e.data.message);
+      });
+
+    vm.submitPassword = formData => {
+      formData.token = $stateParams.id;
+      if (formData.password !== formData.confirmPassword) {
+        Notification.warning("Passwords do not match");
+        return;
+      }
+
+      if (formData.password.length < 6) {
+        Notification.warning("Password too short. Minimum 6 characters");
+        return;
+      }
+
+      let strongPassword = [
+        { regex: /[A-Z]+/, type: "uppercase" },
+        { regex: /[0-9]+/, type: "number" },
+        { regex: /\W+/, type: "special" }
+      ].reduce((acc, x) => {
+        if (!x.regex.test(formData.password)) {
+          Notification.warning(
+            `Password should contain atlease one ${x.type} character`
+          );
+          acc = false;
+        }
+        return acc;
+      }, true);
+
+      if (!strongPassword) {
+        return;
+      }
+      apiFactory
+        .setPassword(formData)
+        .then(resp => {
+          if (resp.data.valid) {
+            $scope.formData = {};
+            Notification.success(resp.data.message);
+          } else {
+            Notification.error(resp.data.message);
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          Notification.error(e);
         });
     };
   });
