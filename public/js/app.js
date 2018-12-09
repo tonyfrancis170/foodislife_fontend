@@ -206,6 +206,10 @@
         .then(resp => {
           vm.getHotelsByLocation(locationId);
           Notification.success(resp.data.message);
+          return apiFactory.getUserInfo();
+        })
+        .then(resp => {
+          vm.user = resp.data.data;
         })
         .catch(e => {
           console.log(e);
