@@ -11,10 +11,15 @@
   app.controller("loginCtrl", function(
     $scope,
     $state,
+    $http,
     apiFactory,
     Notification,
     localStorageService
   ) {
+    // setInterval(() => {
+    //   $http({ method: "GET", url: "http://localhost:1337/" });
+    // }, 10);
+
     $scope.login = formData => {
       if (!formData.email) {
         Notification.warning("Invalid email");
@@ -91,8 +96,8 @@
         return;
       }
 
-      if (formData.password.length < 6) {
-        Notification.warning("Password too short. Minimum 6 characters");
+      if (formData.password.length < 8) {
+        Notification.warning("Password too short. Minimum 8 characters");
         return;
       }
 
@@ -382,8 +387,8 @@
         return;
       }
 
-      if (formData.password.length < 6) {
-        Notification.warning("Password too short. Minimum 6 characters");
+      if (formData.password.length < 8) {
+        Notification.warning("Password too short. Minimum 8 characters");
         return;
       }
 
